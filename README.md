@@ -9,3 +9,4 @@ Fancy Badges
 ![badge](https://img.shields.io/github/languages/code-size/dippyshere/Durr-Burger-Game)
 ![badge](https://img.shields.io/github/issues/dippyshere/Durr-Burger-Game)
 ![badge](https://img.shields.io/github/issues-closed/dippyshere/Durr-Burger-Game)
+![](umu.gif)
