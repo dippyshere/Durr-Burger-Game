@@ -14,7 +14,7 @@ pygame.display.set_caption("Durr Burger Mini Game")
 #if using darwin vs nt (mac vs new tech (windows))
 if os.name == 'nt' and platform.system() == 'Windows':
     print('this game was tested on your platform and should run as intended.')
-elif not(os.name == 'nt') and not('darwin' in os.name)
+elif not(os.name == 'nt') and not('darwin' in os.name):
     print('this game may not function as intended on your platform, or may function to varying degrees of success.')
 if 'darwin' in os.name:
     print('this game may not work on your platform as it is mostly untested on Mac OS. You may proceed, however I can not guarantee any success.')
@@ -35,6 +35,7 @@ exit_b = pygame.image.load('images/exit hover.png')
 scanlines = pygame.image.load('images/scanlines.png')
 score = 0
 fps = 60
+konami = [False, False, False, False, False, False, False, False, False, False]
 #music = pygame.mixer.music.load('audio/game.ogg')
 
 class player(object):
@@ -62,14 +63,41 @@ class projectile(object):
 pizza = player(360, 650, 64, 64)
 
 def start():
-    win.blit(bg1, (0,0))
+    global konami
+    win.blit(bg, (0,0))
     pygame.display.flip()
-    game()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            konami[0] = True
+            konami[1] = True
+        if keys[pygame.K_DOWN]:
+            konami[2] = True
+            konami[3] = True
+        if keys[pygame.K_LEFT]:
+            konami[4] = True
+            konami[6] = True
+        if keys[pygame.K_RIGHT]:
+            konami[5] = True
+            konami[7] = True
+        if keys[pygame.K_b]:
+            konami[8] = True
+        if keys[pygame.K_a]:
+            konami[9] = True
+        if keys[pygame.K_RETURN] and all(konami) == True:
+            win.blit(bg1, (0,0))
+            game()
+        clock.tick(fps)
+        pygame.display.flip()
 def redrawgamewindow():
     pizza.draw(win)
     pygame.event.pump()
     #projectile.draw(win)
-    pass
+    pygame.display.update() 
 
 def game():
     is_a_crashed = False
