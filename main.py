@@ -1,11 +1,23 @@
 """
 string
 """
-import pygame, sys, os, random, time
+import os
+import platform
+import pygame
+import sys
+
 pygame.init()
 
 win = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Durr Burger Mini Game")
+
+#if using darwin vs nt (mac vs new tech (windows))
+if os.name == 'nt' and platform.system() == 'Windows':
+    print('this game was tested on your platform and should run as intended.')
+elif not(os.name == 'nt') and not('darwin' in os.name)
+    print('this game may not function as intended on your platform, or may function to varying degrees of success.')
+if 'darwin' in os.name:
+    print('this game may not work on your platform as it is mostly untested on Mac OS. You may proceed, however I can not guarantee any success.')
 
 clock = pygame.time.Clock()
 gcache = globals()
@@ -22,6 +34,7 @@ exit_a = pygame.image.load('images/exit.png')
 exit_b = pygame.image.load('images/exit hover.png')
 scanlines = pygame.image.load('images/scanlines.png')
 score = 0
+fps = 60
 #music = pygame.mixer.music.load('audio/game.ogg')
 
 class player(object):
@@ -46,23 +59,30 @@ class projectile(object):
     def draw(self, win):
         win.blit(projectile_img, (self.x, self.y))
     
-pizza = (360, 650, 64, 64)
+pizza = player(360, 650, 64, 64)
 
 def start():
     win.blit(bg1, (0,0))
     pygame.display.flip()
     game()
-def redrawGame():
+def redrawgamewindow():
     pizza.draw(win)
+    pygame.event.pump()
     #projectile.draw(win)
     pass
 
 def game():
-    is_a_crashed = True
+    is_a_crashed = False
     while not(is_a_crashed):
-        clock.tick(60)
-        redrawGame()
-    pass
+        keys = pygame.key.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        if keys[pygame.K_RETURN]:
+            print('pause')
+        clock.tick(fps)
+        redrawgamewindow()
 
 if __name__ == '__main__':
     start()
