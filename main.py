@@ -35,7 +35,19 @@ exit_b = pygame.image.load('images/exit hover.png')
 scanlines = pygame.image.load('images/scanlines.png')
 score = 0
 fps = 60
-konami = [False, False, False, False, False, False, False, False, False, False]
+timer = 0
+
+white = (255, 255, 255)
+green = (0, 200, 0)
+blue = (0, 160, 220)
+black = (0, 0, 0)
+red = (200,0,0)
+bright_red = (255,0,0)
+bright_green = (0,255,0)
+bright_blue = (0,255,255)
+purple = (255,0,255)
+
+konami = [True, True, True, True, True, True, True, True, True, True]
 #music = pygame.mixer.music.load('audio/game.ogg')
 
 class player(object):
@@ -94,27 +106,47 @@ def start():
         clock.tick(fps)
         pygame.display.flip()
 def redrawgamewindow():
+    smallText = pygame.font.Font("fonts/Ailerons-Typeface.otf",40)
+    textSurf, textRect = text_objects("FPS: " + str(fpsc), smallText)
+    textRect.center = (200, 200)
+    win.blit(textSurf, textRect)
+    updaterect = pygame.Rect(pizza.x - 32, pizza.y - 32, 96, 96)
+    win.blit(bg1, (0,0))
     pizza.draw(win)
     pygame.event.pump()
     #projectile.draw(win)
-    pygame.display.update() 
+    pygame.display.flip()
+    #if timer == 0:
+    #    pygame.display.flip()
+    #else:
+    #    pygame.display.update(updaterect)
 
 def game():
+    global timer
+    global fpsc
     is_a_crashed = False
     while not(is_a_crashed):
+        fpsc = clock.get_fps()
+        timer += 1
         keys = pygame.key.get_pressed()
-        for event in pygame.event.get():
+        for event in pygame.event.get():                                                                                                                          
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
         if keys[pygame.K_RETURN]:
             print('pause')
-        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
-            print('left')
-        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-            print('right')
+        if keys[pygame.K_a] or keys[pygame.K_LEFT] and pizza.x > pizza.vel:
+            pizza.x -= pizza.vel
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT] and pizza.x < 1280 - pizza.width - pizza.vel:
+            pizza.x += pizza.vel
+        if timer == 60:
+            timer = 0
         clock.tick(fps)
         redrawgamewindow()
+
+def text_objects(text, font):
+    textSurface = font.render(text, True, white)
+    return textSurface, textSurface.get_rect()
 
 if __name__ == '__main__':
     start()
