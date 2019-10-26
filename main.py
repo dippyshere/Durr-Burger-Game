@@ -81,6 +81,10 @@ def game():
                 sys.exit()
         if keys[pygame.K_RETURN]:
             print('pause')
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+            print('left')
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+            print('right')
         clock.tick(fps)
         redrawgamewindow()
 
