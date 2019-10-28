@@ -49,7 +49,6 @@ bright_blue = (0,255,255)
 purple = (255,0,255)
 
 konami = [True, True, True, True, True, True, True, True, True, True]
-#music = pygame.mixer.music.load('audio/game.ogg')
 
 class player(object):
     def __init__(self, x, y, width, height):
@@ -77,6 +76,8 @@ pizza = player(360, 600, 64, 64)
 projectile = projectile(0, 0, 24, 74)
 
 def start():
+    music = pygame.mixer.music.load('music/ambiance.ogg')
+    pygame.mixer.music.play(-1)
     global konami
     win.blit(bg, (0,0))
     pygame.display.flip()
@@ -122,6 +123,8 @@ def redrawgamewindow():
     #    pygame.display.update(updaterect)
 
 def game():
+    music = pygame.mixer.music.load('music/tunes.ogg')
+    pygame.mixer.music.play(-1)
     global timer
     global fpsc
     is_a_crashed = False
