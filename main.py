@@ -40,7 +40,8 @@ fps = 60
 timer = 0
 exit_state = 'normal'
 
-pygame.display.set_icon(normal_bad)
+icon = pygame.image.load('images/icon.png')
+pygame.display.set_icon(icon)
 
 white = (255, 255, 255)
 green = (0, 200, 0)
@@ -80,6 +81,7 @@ pizza = player(360, 600, 64, 64)
 projectile = projectile(0, 0, 24, 74)
 
 def start():
+    pygame.display.set_icon(icon)
     music = pygame.mixer.music.load('music/ambiance.ogg')
     pygame.mixer.music.play(-1)
     global konami
@@ -109,6 +111,7 @@ def start():
             konami[9] = True
         if keys[pygame.K_RETURN] and all(konami) == True:
             win.blit(bg1, (0,0))
+            pygame.mixer.music.stop()
             game()
         clock.tick(fps)
         pygame.display.flip()
@@ -120,6 +123,7 @@ def redrawgamewindow():
     font = pygame.font.Font("fonts/Ailerons-Typeface.otf",40)
     text = font.render("FPS: " + str(fpsc),True,white)
     win.blit(text, (935,15))
+    #win.blit(scanlines, (0,0))
     if exit_state == 'normal':
         win.blit(exit_a, (1140, 646))
     if exit_state == 'hover':
@@ -153,13 +157,13 @@ def game():
             pizza.x -= pizza.vel
         if keys[pygame.K_d] or keys[pygame.K_RIGHT] and pizza.x < 1280 - pizza.width - pizza.vel:
             pizza.x += pizza.vel
-        if keys[pygame.K_SPACE] or [pygame.K_UP]:
-            projectile.x = pizza.x
-            projectile.y = pizza.y
-            projectile.timer = 0
-        if projectile.timer < 120:
-            projectile.y -= projectile.vel
-            projectile.timer -= 1
+        #if keys[pygame.K_SPACE] or [pygame.K_UP]:
+        #    projectile.x = pizza.x
+        #    projectile.y = pizza.y
+        #    projectile.timer = 0
+        #if projectile.timer < 120:
+        #    projectile.y -= projectile.vel
+        #    projectile.timer -= 1
         if timer == 60:
             timer = 0
         clock.tick(fps)
