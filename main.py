@@ -123,7 +123,7 @@ def redrawgamewindow():
     #    pygame.display.update(updaterect)
 
 def game():
-    music = pygame.mixer.music.load('music/tunes.ogg')
+    music = pygame.mixer.music.load('music/tunes2.ogg')
     pygame.mixer.music.play(-1)
     global timer
     global fpsc
