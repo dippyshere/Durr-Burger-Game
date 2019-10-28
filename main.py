@@ -23,6 +23,7 @@ clock = pygame.time.Clock()
 gcache = globals()
 cache = str(sys.getsizeof(gcache))
 print(cache)
+font = pygame.font.Font(None, 30)
 
 player_img = pygame.image.load('images/player.png')
 boss = pygame.image.load('images/boss.png')
@@ -72,7 +73,8 @@ class projectile(object):
     def draw(self, win):
         win.blit(projectile_img, (self.x, self.y))
     
-pizza = player(360, 650, 64, 64)
+pizza = player(360, 600, 64, 64)
+projectile = projectile(0, 0, 24, 74)
 
 def start():
     global konami
@@ -106,15 +108,13 @@ def start():
         clock.tick(fps)
         pygame.display.flip()
 def redrawgamewindow():
-    smallText = pygame.font.Font("fonts/Ailerons-Typeface.otf",40)
-    textSurf, textRect = text_objects("FPS: " + str(fpsc), smallText)
-    textRect.center = (200, 200)
-    win.blit(textSurf, textRect)
     updaterect = pygame.Rect(pizza.x - 32, pizza.y - 32, 96, 96)
     win.blit(bg1, (0,0))
     pizza.draw(win)
-    pygame.event.pump()
-    #projectile.draw(win)
+    projectile.draw(win)
+    font = pygame.font.Font("fonts/Ailerons-Typeface.otf",40)
+    text = font.render("FPS: " + str(fpsc),True,white)
+    win.blit(text, (935,15))
     pygame.display.flip()
     #if timer == 0:
     #    pygame.display.flip()
@@ -139,6 +139,7 @@ def game():
             pizza.x -= pizza.vel
         if keys[pygame.K_d] or keys[pygame.K_RIGHT] and pizza.x < 1280 - pizza.width - pizza.vel:
             pizza.x += pizza.vel
+        #if keys[pygame.K_SPACE] or [pygame.K_UP] and timer :
         if timer == 60:
             timer = 0
         clock.tick(fps)
