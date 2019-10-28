@@ -33,10 +33,14 @@ bg1 = pygame.image.load('images/Black hole stars.png')
 bg = pygame.image.load("images/Black hole.png")
 exit_a = pygame.image.load('images/exit.png')
 exit_b = pygame.image.load('images/exit hover.png')
+exit_c = pygame.image.load('images/exit press.png')
 scanlines = pygame.image.load('images/scanlines.png')
 score = 0
 fps = 60
 timer = 0
+exit_state = 'normal'
+
+pygame.display.set_icon(normal_bad)
 
 white = (255, 255, 255)
 green = (0, 200, 0)
@@ -116,6 +120,12 @@ def redrawgamewindow():
     font = pygame.font.Font("fonts/Ailerons-Typeface.otf",40)
     text = font.render("FPS: " + str(fpsc),True,white)
     win.blit(text, (935,15))
+    if exit_state == 'normal':
+        win.blit(exit_a, (1140, 646))
+    if exit_state == 'hover':
+        win.blit(exit_b, (1140, 646))
+    if exit_state == 'click':
+        win.blit(exit_c, (1140, 646))
     pygame.display.flip()
     #if timer == 0:
     #    pygame.display.flip()
@@ -136,13 +146,20 @@ def game():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        if keys[pygame.K_RETURN]:
-            print('pause')
+        if keys[pygame.K_PLUS]:
+            #print('pause')
+            pass
         if keys[pygame.K_a] or keys[pygame.K_LEFT] and pizza.x > pizza.vel:
             pizza.x -= pizza.vel
         if keys[pygame.K_d] or keys[pygame.K_RIGHT] and pizza.x < 1280 - pizza.width - pizza.vel:
             pizza.x += pizza.vel
-        #if keys[pygame.K_SPACE] or [pygame.K_UP] and timer :
+        if keys[pygame.K_SPACE] or [pygame.K_UP]:
+            projectile.x = pizza.x
+            projectile.y = pizza.y
+            projectile.timer = 0
+        if projectile.timer < 120:
+            projectile.y -= projectile.vel
+            projectile.timer -= 1
         if timer == 60:
             timer = 0
         clock.tick(fps)
