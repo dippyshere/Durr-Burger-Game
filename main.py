@@ -1,14 +1,17 @@
 """
 string
 """
-import os
-import platform
 import pygame
 import sys
-
+import os
+from pygame.locals import *
+import platform
+import random
+import time
+import datetime as timedelta
 pygame.init()
 
-win = pygame.display.set_mode((1280, 720))
+win = pygame.display.set_mode((1280, 720), FULLSCREEN)
 pygame.display.set_caption("Durr Burger Mini Game")
 
 #if using darwin vs nt (mac vs new tech (windows))
@@ -36,11 +39,11 @@ exit_b = pygame.image.load('images/exit hover.png')
 exit_c = pygame.image.load('images/exit press.png')
 scanlines = pygame.image.load('images/scanlines.png')
 score = 0
-fps = 60
+fps = 999
 timer = 0
 exit_state = 'normal'
 
-icon = pygame.image.load('images/icon.png')
+icon = pygame.image.load('images/boss.png')
 pygame.display.set_icon(icon)
 
 white = (255, 255, 255)
@@ -119,10 +122,12 @@ def redrawgamewindow():
     updaterect = pygame.Rect(pizza.x - 32, pizza.y - 32, 96, 96)
     win.blit(bg1, (0,0))
     pizza.draw(win)
-    projectile.draw(win)
+    #projectile.draw(win)
     font = pygame.font.Font("fonts/Ailerons-Typeface.otf",40)
-    text = font.render("FPS: " + str(fpsc),True,white)
-    win.blit(text, (935,15))
+    text = font.render("FPS:" + str(fpsc),True,white)
+    win.blit(text, (5, 5))
+    text = font.render("Frame time:" + str(frm_time)+'ms',True,white)
+    win.blit(text, (5,55))
     #win.blit(scanlines, (0,0))
     if exit_state == 'normal':
         win.blit(exit_a, (1140, 646))
@@ -131,31 +136,52 @@ def redrawgamewindow():
     if exit_state == 'click':
         win.blit(exit_c, (1140, 646))
     pygame.display.flip()
-    #if timer == 0:
-    #    pygame.display.flip()
-    #else:
-    #    pygame.display.update(updaterect)
+    if timer == 0:
+        pygame.display.flip()
+    else:
+        pygame.display.update(updaterect)
 
 def game():
     music = pygame.mixer.music.load('music/tunes2.ogg')
     pygame.mixer.music.play(-1)
     global timer
     global fpsc
+    global exit_state
+    global frm_time
+    frm_time = 0.0
     is_a_crashed = False
+    attacks = []
+    fpsavg = 0
+    fpsc = 60.0
     while not(is_a_crashed):
-        fpsc = clock.get_fps()
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
+        fpsavg = clock.get_fps()
         timer += 1
         keys = pygame.key.get_pressed()
         for event in pygame.event.get():                                                                                                                          
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+        if 1140+130 > mouse[0] > 1140 and 646+64 > mouse[1] > 646:
+            if click[0]:
+                exit_state = 'click'
+                redrawgamewindow()
+                for i in range(0,100):
+                    pygame.event.pump()
+                    pygame.time.delay(5)
+                pygame.quit()
+                sys.exit()
+            else:
+                exit_state = 'hover'
+        else:
+            exit_state = 'normal'
         if keys[pygame.K_PLUS]:
             #print('pause')
             pass
-        if keys[pygame.K_a] or keys[pygame.K_LEFT] and pizza.x > pizza.vel:
+        if keys[pygame.K_a] and pizza.x > pizza.vel or keys[pygame.K_LEFT] and pizza.x > pizza.vel:
             pizza.x -= pizza.vel
-        if keys[pygame.K_d] or keys[pygame.K_RIGHT] and pizza.x < 1280 - pizza.width - pizza.vel:
+        if keys[pygame.K_d] and pizza.x < 1280 - pizza.width - pizza.vel or keys[pygame.K_RIGHT] and pizza.x < 1280 - pizza.width - pizza.vel:
             pizza.x += pizza.vel
         #if keys[pygame.K_SPACE] or [pygame.K_UP]:
         #    projectile.x = pizza.x
@@ -166,6 +192,8 @@ def game():
         #    projectile.timer -= 1
         if timer == 60:
             timer = 0
+        fpsc = (fpsavg // 1) + 2
+        frm_time = clock.get_time()
         clock.tick(fps)
         redrawgamewindow()
 
