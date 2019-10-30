@@ -11,7 +11,7 @@ import time
 import datetime as timedelta
 pygame.init()
 
-win = pygame.display.set_mode((1280, 720), FULLSCREEN)
+win = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Durr Burger Mini Game")
 
 #if using darwin vs nt (mac vs new tech (windows))
@@ -37,10 +37,24 @@ bg = pygame.image.load("images/Black hole.png")
 exit_a = pygame.image.load('images/exit.png')
 exit_b = pygame.image.load('images/exit hover.png')
 exit_c = pygame.image.load('images/exit press.png')
-scanlines = pygame.image.load('images/scanlines.png')
+scanlines = pygame.image.load('images/compress/vector scanlines.png')
+exitbg = pygame.image.load('images/stars blur.png')
+exitbox = pygame.image.load('images/box.png')
+exitcnfrm_a = pygame.image.load('images/quit.png')
+exitcnfrm_b = pygame.image.load('images/quit hover.png')
+exitcnfrm_c = pygame.image.load('images/quit press.png')
+back_a = pygame.image.load('images/back.png')
+back_b = pygame.image.load('images/back hover')
+back_c = pygame.image.load('images/back press')
 score = 0
-fps = 999
+fps = 60
 timer = 0
+fpsc = 60
+frm_time = 0.0
+is_a_crashed = False
+attacks = []
+fpsavg = 0
+fpsc = 60.0
 exit_state = 'normal'
 
 icon = pygame.image.load('images/boss.png')
@@ -128,6 +142,11 @@ def redrawgamewindow():
     win.blit(text, (5, 5))
     text = font.render("Frame time:" + str(frm_time)+'ms',True,white)
     win.blit(text, (5,55))
+    font = pygame.font.Font("fonts/BurbankBigCondensed-Black.otf",40)
+    text = font.render("High Score",True,red)
+    win.blit(text, ((1280//2) - 70,15))
+    text = font.render(str(score),True,white)
+    win.blit(text, ((1280//2) ,65))
     #win.blit(scanlines, (0,0))
     if exit_state == 'normal':
         win.blit(exit_a, (1140, 646))
@@ -144,15 +163,6 @@ def redrawgamewindow():
 def game():
     music = pygame.mixer.music.load('music/tunes2.ogg')
     pygame.mixer.music.play(-1)
-    global timer
-    global fpsc
-    global exit_state
-    global frm_time
-    frm_time = 0.0
-    is_a_crashed = False
-    attacks = []
-    fpsavg = 0
-    fpsc = 60.0
     while not(is_a_crashed):
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
@@ -177,8 +187,7 @@ def game():
         else:
             exit_state = 'normal'
         if keys[pygame.K_PLUS]:
-            #print('pause')
-            pass
+            pause()
         if keys[pygame.K_a] and pizza.x > pizza.vel or keys[pygame.K_LEFT] and pizza.x > pizza.vel:
             pizza.x -= pizza.vel
         if keys[pygame.K_d] and pizza.x < 1280 - pizza.width - pizza.vel or keys[pygame.K_RIGHT] and pizza.x < 1280 - pizza.width - pizza.vel:
@@ -196,6 +205,11 @@ def game():
         frm_time = clock.get_time()
         clock.tick(fps)
         redrawgamewindow()
+
+def pause():
+    pygame.mixer.music.pause()
+    while not(False):
+        win.blit
 
 def text_objects(text, font):
     textSurface = font.render(text, True, white)
