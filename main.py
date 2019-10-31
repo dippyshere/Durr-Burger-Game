@@ -44,8 +44,8 @@ exitcnfrm_a = pygame.image.load('images/quit.png')
 exitcnfrm_b = pygame.image.load('images/quit hover.png')
 exitcnfrm_c = pygame.image.load('images/quit press.png')
 back_a = pygame.image.load('images/back.png')
-back_b = pygame.image.load('images/back hover')
-back_c = pygame.image.load('images/back press')
+back_b = pygame.image.load('images/back hover.png')
+back_c = pygame.image.load('images/back press.png')
 score = 0
 fps = 60
 timer = 0
@@ -79,7 +79,6 @@ class player(object):
         self.width = width
         self.height = height
         self.vel = 10
-        self.shoot = False
         self.die = False
     def draw(self, win):
         win.blit(player_img, (self.x, self.y))
@@ -161,6 +160,11 @@ def redrawgamewindow():
         pygame.display.update(updaterect)
 
 def game():
+    global timer
+    global fpsavg
+    global fpsc
+    global frm_time
+    global exit_state
     music = pygame.mixer.music.load('music/tunes2.ogg')
     pygame.mixer.music.play(-1)
     while not(is_a_crashed):
@@ -180,8 +184,7 @@ def game():
                 for i in range(0,100):
                     pygame.event.pump()
                     pygame.time.delay(5)
-                pygame.quit()
-                sys.exit()
+                exit_function()
             else:
                 exit_state = 'hover'
         else:
@@ -206,10 +209,17 @@ def game():
         clock.tick(fps)
         redrawgamewindow()
 
-def pause():
+def exit_function():
     pygame.mixer.music.pause()
     while not(False):
-        win.blit
+        win.blit(exitbg, (0,0))
+        win.blit(exitbox, (294,160))
+        pygame.display.update()
+        pygame.event.pump()
+        clock.tick(fps)
+
+def pause():
+    pass
 
 def text_objects(text, font):
     textSurface = font.render(text, True, white)
