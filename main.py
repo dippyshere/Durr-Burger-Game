@@ -9,18 +9,20 @@ import platform
 import random
 import time
 import datetime as timedelta
+
 pygame.init()
 
 win = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Durr Burger Mini Game")
 
-#if using darwin vs nt (mac vs new tech (windows))
+# if using darwin vs nt (mac vs new tech (windows))
 if os.name == 'nt' and platform.system() == 'Windows':
     print('this game was tested on your platform and should run as intended.')
-elif not(os.name == 'nt') and not('darwin' in os.name):
+elif not (os.name == 'nt') and not ('darwin' in os.name):
     print('this game may not function as intended on your platform, or may function to varying degrees of success.')
 if 'darwin' in os.name:
-    print('this game may not work on your platform as it is mostly untested on Mac OS. You may proceed, however I can not guarantee any success.')
+    print(
+        'this game may not work on your platform as it is mostly untested on Mac OS. You may proceed, however I can not guarantee any success.')
 
 clock = pygame.time.Clock()
 gcache = globals()
@@ -55,6 +57,8 @@ is_a_crashed = False
 attacks = []
 fpsavg = 0
 fpsc = 60.0
+cooldown = float(0)
+bullets = []
 exit_state = 'normal'
 
 icon = pygame.image.load('images/boss.png')
@@ -64,13 +68,14 @@ white = (255, 255, 255)
 green = (0, 200, 0)
 blue = (0, 160, 220)
 black = (0, 0, 0)
-red = (200,0,0)
-bright_red = (255,0,0)
-bright_green = (0,255,0)
-bright_blue = (0,255,255)
-purple = (255,0,255)
+red = (200, 0, 0)
+bright_red = (255, 0, 0)
+bright_green = (0, 255, 0)
+bright_blue = (0, 255, 255)
+purple = (255, 0, 255)
 
 konami = [True, True, True, True, True, True, True, True, True, True]
+
 
 class player(object):
     def __init__(self, x, y, width, height):
@@ -78,10 +83,13 @@ class player(object):
         self.y = y
         self.width = width
         self.height = height
-        self.vel = 10
+        self.vel = 6
         self.die = False
+
     def draw(self, win):
         win.blit(player_img, (self.x, self.y))
+
+
 class projectile(object):
     def __init__(self, x, y, width, height):
         self.x = x
@@ -92,16 +100,17 @@ class projectile(object):
         self.timer = 120
     def draw(self, win):
         win.blit(projectile_img, (self.x, self.y))
-    
+
+
 pizza = player(360, 600, 64, 64)
-projectile = projectile(0, 0, 24, 74)
+
 
 def start():
     pygame.display.set_icon(icon)
     music = pygame.mixer.music.load('music/ambiance.ogg')
     pygame.mixer.music.play(-1)
     global konami
-    win.blit(bg, (0,0))
+    win.blit(bg, (0, 0))
     pygame.display.flip()
     while True:
         for event in pygame.event.get():
@@ -126,27 +135,89 @@ def start():
         if keys[pygame.K_a]:
             konami[9] = True
         if keys[pygame.K_RETURN] and all(konami) == True:
-            win.blit(bg1, (0,0))
+            win.blit(bg1, (0, 0))
             pygame.mixer.music.stop()
+            music = pygame.mixer.music.load('music/tunes2.ogg')
+            pygame.mixer.music.play(-1)
             game()
         clock.tick(fps)
         pygame.display.flip()
+
+def game():
+    global projectiles
+    global timer
+    global fpsavg
+    global fpsc
+    global frm_time
+    global exit_state
+    global cooldown
+    global bullets
+    while not (is_a_crashed):
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
+        fpsavg = clock.get_fps()
+        timer += 1
+        keys = pygame.key.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        if 1140 + 130 > mouse[0] > 1140 and 646 + 64 > mouse[1] > 646:
+            if click[0]:
+                exit_state = 'click'
+                redrawgamewindow()
+                for i in range(0, 30):
+                    pygame.event.pump()
+                    pygame.time.delay(5)
+                exit_function()
+            else:
+                exit_state = 'hover'
+        else:
+            exit_state = 'normal'
+        if keys[pygame.K_p]:
+            pause()
+        if keys[pygame.K_a] and pizza.x > pizza.vel or keys[pygame.K_LEFT] and pizza.x > pizza.vel:
+            pizza.x -= pizza.vel
+        if keys[pygame.K_d] and pizza.x < 1280 - pizza.width - pizza.vel or keys[
+            pygame.K_RIGHT] and pizza.x < 1280 - pizza.width - pizza.vel:
+            pizza.x += pizza.vel
+        for bullet in bullets:
+            if bullet.y > -74:
+                bullet.y -= bullet.vel
+            else:
+                bullets.pop(bullets.index(bullet))
+        if len(bullets) < 50 and time.time() - cooldown > float(0.25):
+            if keys[pygame.K_UP] or keys[pygame.K_w] or keys[pygame.K_SPACE]:
+                cooldown = time.time()
+                bullets.append(
+                    projectile(pizza.x + 13, pizza.y, 25, 74))
+        if timer == 60:
+            timer = 0
+        fpsc = (fpsavg // 1) + 2
+        frm_time = clock.get_time()
+        clock.tick(fps)
+        redrawgamewindow()
+
 def redrawgamewindow():
     updaterect = pygame.Rect(pizza.x - 32, pizza.y - 32, 96, 96)
-    win.blit(bg1, (0,0))
+    win.blit(bg1, (0, 0))
+    for bullet in bullets:
+        bullet.draw(win)
     pizza.draw(win)
-    #projectile.draw(win)
-    font = pygame.font.Font("fonts/Ailerons-Typeface.otf",40)
-    text = font.render("FPS:" + str(fpsc),True,white)
+    # projectile.draw(win)
+    font = pygame.font.Font("fonts/Ailerons-Typeface.otf", 40)
+    text = font.render("FPS:" + str(fpsc), True, white)
     win.blit(text, (5, 5))
-    text = font.render("Frame time:" + str(frm_time)+'ms',True,white)
-    win.blit(text, (5,55))
-    font = pygame.font.Font("fonts/BurbankBigCondensed-Black.otf",40)
-    text = font.render("High Score",True,red)
-    win.blit(text, ((1280//2) - 70,15))
-    text = font.render(str(score),True,white)
-    win.blit(text, ((1280//2) ,65))
-    #win.blit(scanlines, (0,0))
+    text = font.render("Frame time:" + str(frm_time) + 'ms', True, white)
+    win.blit(text, (5, 55))
+    smallText = pygame.font.Font("fonts/BurbankBigCondensed-Black.otf", 40)
+    textSurf, textRect = text_objects('High Score', smallText, red)
+    textRect.center = (1280 // 2, 35)
+    win.blit(textSurf, textRect)
+    textSurf, textRect = text_objects(str(score), smallText, white)
+    textRect.center = (1280 // 2, 80)
+    win.blit(textSurf, textRect)
+    # win.blit(scanlines, (0,0))
     if exit_state == 'normal':
         win.blit(exit_a, (1140, 646))
     if exit_state == 'hover':
@@ -159,71 +230,71 @@ def redrawgamewindow():
     else:
         pygame.display.update(updaterect)
 
-def game():
-    global timer
-    global fpsavg
-    global fpsc
-    global frm_time
-    global exit_state
-    music = pygame.mixer.music.load('music/tunes2.ogg')
-    pygame.mixer.music.play(-1)
-    while not(is_a_crashed):
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-        fpsavg = clock.get_fps()
-        timer += 1
-        keys = pygame.key.get_pressed()
-        for event in pygame.event.get():                                                                                                                          
+def exit_function():
+    pygame.mixer.music.pause()
+    while not (False):
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        if 1140+130 > mouse[0] > 1140 and 646+64 > mouse[1] > 646:
+        win.blit(exitbg, (0, 0))
+        win.blit(exitbox, (287, 161))
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
+        if 744 + 108 > mouse[0] > 744 and 476 + 54 > mouse[1] > 476:
             if click[0]:
-                exit_state = 'click'
-                redrawgamewindow()
-                for i in range(0,100):
+                win.blit(exitcnfrm_c, (744, 476))
+                win.blit(back_a, (865, 476))
+                pygame.display.update()
+                for i in range(0, 100):
                     pygame.event.pump()
                     pygame.time.delay(5)
-                exit_function()
-            else:
-                exit_state = 'hover'
-        else:
-            exit_state = 'normal'
-        if keys[pygame.K_PLUS]:
-            pause()
-        if keys[pygame.K_a] and pizza.x > pizza.vel or keys[pygame.K_LEFT] and pizza.x > pizza.vel:
-            pizza.x -= pizza.vel
-        if keys[pygame.K_d] and pizza.x < 1280 - pizza.width - pizza.vel or keys[pygame.K_RIGHT] and pizza.x < 1280 - pizza.width - pizza.vel:
-            pizza.x += pizza.vel
-        #if keys[pygame.K_SPACE] or [pygame.K_UP]:
-        #    projectile.x = pizza.x
-        #    projectile.y = pizza.y
-        #    projectile.timer = 0
-        #if projectile.timer < 120:
-        #    projectile.y -= projectile.vel
-        #    projectile.timer -= 1
-        if timer == 60:
-            timer = 0
-        fpsc = (fpsavg // 1) + 2
-        frm_time = clock.get_time()
-        clock.tick(fps)
-        redrawgamewindow()
+                pygame.display.update()
+                pygame.quit()
+                sys.exit()
 
-def exit_function():
-    pygame.mixer.music.pause()
-    while not(False):
-        win.blit(exitbg, (0,0))
-        win.blit(exitbox, (294,160))
+            else:
+                win.blit(exitcnfrm_b, (744, 476))
+        else:
+            win.blit(exitcnfrm_a, (744, 476))
+        if 865 + 108 > mouse[0] > 865 and 476 + 54 > mouse[1] > 476:
+            if click[0]:
+                win.blit(back_c, (865, 476))
+                for i in range(0, 100):
+                    pygame.event.pump()
+                    pygame.time.delay(5)
+                    pygame.display.update()
+                pygame.mixer.music.unpause()
+                game()
+            else:
+                win.blit(back_b, (865, 476))
+        else:
+            win.blit(back_a, (865, 476))
         pygame.display.update()
         pygame.event.pump()
         clock.tick(fps)
 
-def pause():
-    pass
 
-def text_objects(text, font):
-    textSurface = font.render(text, True, white)
+def pause():
+    redrawgamewindow()
+    pygame.mixer.music.pause()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_RETURN]:
+            pygame.mixer.music.unpause()
+            game()
+        pygame.display.update()
+        clock.tick(fps)
+
+
+def text_objects(text, font, colour):
+    textSurface = font.render(text, True, colour)
     return textSurface, textSurface.get_rect()
+
 
 if __name__ == '__main__':
     start()
