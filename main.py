@@ -48,6 +48,9 @@ exitcnfrm_c = pygame.image.load('images/quit press.png')
 back_a = pygame.image.load('images/back.png')
 back_b = pygame.image.load('images/back hover.png')
 back_c = pygame.image.load('images/back press.png')
+shootsnd = pygame.mixer.Sound('music/PMB_Shoot_01.ogg')
+pausesnd = pygame.mixer.Sound('music/nsmbwiiPause.ogg')
+spawnsnd = pygame.mixer.Sound('music/PMB_Spawn_01.ogg')
 score = 0
 fps = 60
 timer = 0
@@ -139,6 +142,7 @@ def start():
             pygame.mixer.music.stop()
             music = pygame.mixer.music.load('music/tunes2.ogg')
             pygame.mixer.music.play(-1)
+            spawnsnd.play()
             game()
         clock.tick(fps)
         pygame.display.flip()
@@ -186,11 +190,12 @@ def game():
                 bullet.y -= bullet.vel
             else:
                 bullets.pop(bullets.index(bullet))
-        if len(bullets) < 50 and time.time() - cooldown > float(0.25):
+        if len(bullets) < 50 and time.time() - cooldown > float(0.401):
             if keys[pygame.K_UP] or keys[pygame.K_w] or keys[pygame.K_SPACE]:
                 cooldown = time.time()
                 bullets.append(
                     projectile(pizza.x + 13, pizza.y, 25, 74))
+                shootsnd.play()
         if timer == 60:
             timer = 0
         fpsc = (fpsavg // 1) + 2
@@ -278,6 +283,7 @@ def exit_function():
 def pause():
     redrawgamewindow()
     pygame.mixer.music.pause()
+    pausesnd.play()
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -286,6 +292,7 @@ def pause():
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RETURN]:
             pygame.mixer.music.unpause()
+            pausesnd.play()
             game()
         pygame.display.update()
         clock.tick(fps)
