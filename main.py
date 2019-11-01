@@ -192,7 +192,7 @@ def game():
                 bullet.y -= bullet.vel
             else:
                 bullets.pop(bullets.index(bullet))
-        if len(bullets) < 50 and time.time() - cooldown > float(0.401):
+        if len(bullets) < 50 and time.time() - cooldown > float(0.322):
             if keys[pygame.K_UP] or keys[pygame.K_w] or keys[pygame.K_SPACE]:
                 cooldown = time.time()
                 bullets.append(
