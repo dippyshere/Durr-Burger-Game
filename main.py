@@ -1,6 +1,8 @@
 """
 string
 """
+__author__ = 'Alex Hanson'
+__version__ = 0.4
 import pygame
 import sys
 import os
