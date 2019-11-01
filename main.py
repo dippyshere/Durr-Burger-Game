@@ -36,13 +36,13 @@ player_img = pygame.image.load('images/player.png')
 boss = pygame.image.load('images/boss.png')
 projectile_img = pygame.image.load('images/projectile.png')
 normal_bad = pygame.image.load('images/enemy.png')
-bg1 = pygame.image.load('images/Black hole stars.png')
-bg = pygame.image.load("images/Black hole.png")
+bg1 = pygame.image.load('images/Black hole stars.png').convert()
+bg = pygame.image.load("images/Black hole.png").convert()
 exit_a = pygame.image.load('images/exit.png')
 exit_b = pygame.image.load('images/exit hover.png')
 exit_c = pygame.image.load('images/exit press.png')
 scanlines = pygame.image.load('images/compress/vector scanlines.png')
-exitbg = pygame.image.load('images/stars blur.png')
+exitbg = pygame.image.load('images/stars blur.png').convert()
 exitbox = pygame.image.load('images/box.png')
 exitcnfrm_a = pygame.image.load('images/quit.png')
 exitcnfrm_b = pygame.image.load('images/quit hover.png')
@@ -107,7 +107,7 @@ class projectile(object):
         win.blit(projectile_img, (self.x, self.y))
 
 
-pizza = player(360, 600, 64, 64)
+pizza = player(640 - 32, 720, 64, 64)
 
 
 def start():
@@ -158,6 +158,10 @@ def game():
     global exit_state
     global cooldown
     global bullets
+    while pizza.y > 640:
+        pizza.y -= 1
+        clock.tick(fps)
+        redrawgamewindow()
     while not (is_a_crashed):
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
