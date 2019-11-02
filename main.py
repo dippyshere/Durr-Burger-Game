@@ -7,7 +7,7 @@ from pygame.font import FontType
 from pygame.ftfont import Font
 
 __author__ = 'Alex Hanson'
-__version__ = 0.4.5
+__version__ = 0.41
 import pygame
 import sys
 import os
