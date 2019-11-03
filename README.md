@@ -4,6 +4,19 @@ What is it?
 ===
 This game is based on the mini game present in Fortnite either when attempting to view the world cup while it was not broadcasting in BR or when entering the Konami Code on the black hole screen during 'The End' event.
 
+How to play?
+===
+There are a number of keyboard styles available, with custom ones comming soon. The default keybinds are as follows:
+
+| Action | Default Keybind |
+| --- | --- |
+| Move left | A / < |
+| Move right | D / ˃ |
+| Shoot Projectile | W / SPACE / ˄ |
+| Pause | P / = |
+| Unpause | ENTER / RETURN |
+| UI Interaction | Mouse Left |
+
 Notice
 ===
 Since this game is based of the mini game, I've tried to stay faithful to as many aspects as I could, this includes sound extracted from the game, some altered to fit as they did in the game. All images were recreated in Illustrator. These images were then compressed with http://compress-or-die.com/ and https://compresspng.com/. The font 'Burbank Big Condensed' and the 'Burbank' font is trademarked and copyrighted by House Industries.
