@@ -220,7 +220,8 @@ def start() -> object:
             konami[8] = True
         if keys[pygame.K_a]:
             konami[9] = True
-        if keys[pygame.K_RETURN] and all(konami) == True:
+        assert isinstance(konami, object)
+        if keys[pygame.K_RETURN] and (True == all(konami)):
             win.blit(bg1, (0, 0))
             pygame.mixer.music.stop()
             music = pygame.mixer.music.load('music/tunes2.ogg')
@@ -232,7 +233,7 @@ def start() -> object:
 
 
 def game():
-    global projectiles, timer, fpsavg, fpsc, frm_time, exit_state, cooldown, bullets, enemy_list
+    global timer, fpsavg, fpsc, frm_time, exit_state, cooldown, bullets, enemy_list
     oh_my_eggs = time.time()
     while pizza.y > 600:
         pizza.y -= 0.98960910440376
@@ -356,7 +357,7 @@ def redrawgamewindow():
 
 def exit_function():
     pygame.mixer.music.pause()
-    while not (False):
+    while not False:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
