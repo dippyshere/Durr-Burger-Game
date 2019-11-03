@@ -1,4 +1,4 @@
-# Durr Burger Game
+# ![](umu.gif) Durr Burger Game ![](umu.gif)
 
 ## What is it?
 
