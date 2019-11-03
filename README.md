@@ -18,7 +18,7 @@ There are a number of keyboard styles available, with custom ones comming soon. 
 | UI Interaction | Mouse Left |
 
 ## How do I download this???
-Simple! To grab the latest release, head to the releases tab by clicking here, or to grab the latest version, clone this repo
+Simple! To grab the latest release, head to the releases tab by [clicking here](https://github.com/dippyshere/Durr-Burger-Game/releases) or above; or to grab the latest version, [clone this repo](https://github.com/dippyshere/Durr-Burger-Game/archive/master.zip).
 
 ### Notice
 
