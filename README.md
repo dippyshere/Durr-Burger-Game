@@ -35,4 +35,5 @@ Since this game is based of the mini game, I've tried to stay faithful to as man
 ![badge](https://img.shields.io/github/languages/code-size/dippyshere/Durr-Burger-Game)
 ![badge](https://img.shields.io/github/issues/dippyshere/Durr-Burger-Game)
 ![badge](https://img.shields.io/github/issues-closed/dippyshere/Durr-Burger-Game)
+
 ![](umu.gif)
