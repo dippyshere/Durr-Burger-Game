@@ -154,7 +154,6 @@ class player(object):
         self.height = height
         self.vel = 6
         self.die = False
-
     def draw(self, win):
         win.blit(player_img, (self.x, self.y))
 
@@ -176,7 +175,7 @@ class yes(object):
         self.y = y
         self.width = width
         self.height = height
-        self.vel = 4
+        self.vel = 2
         self.timer = 0
     def draw(self, win):
         win.blit(enemy[self.timer], (self.x, self.y))
@@ -226,6 +225,7 @@ def start():
 
 def game():
     global projectiles, timer, fpsavg, fpsc, frm_time, exit_state, cooldown, bullets, enemy_list
+    oh_my_eggs = time.time()
     while pizza.y > 600:
         pizza.y -= 0.98960910440376
         clock.tick(fps)
@@ -285,12 +285,12 @@ def game():
                 if 120 <= foo.timer:
                     foo.timer = 0
             else:
+                assert isinstance(enemy_list.pop, object)
                 enemy_list.pop(enemy_list.index(foo))
-        #oh_my_eggs = time.time()
-        if True:
+        if not float(random.uniform(1.25, 2.95)) > time.time() - oh_my_eggs:
             oh_my_eggs = time.time()
             enemy_list.append(
-                yes(random.randint(0, 1280), -62, 62, 62)
+                yes(random.randint(100, 1180), random.randint(-100, -62), 62, 62)
             )
         if timer == 60:
             timer = 0
