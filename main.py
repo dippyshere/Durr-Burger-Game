@@ -58,66 +58,66 @@ back_c = pygame.image.load('images/back press.png')
 shootsnd = pygame.mixer.Sound('music/PMB_Shoot_01.ogg')
 pausesnd = pygame.mixer.Sound('music/nsmbwiiPause.ogg')
 spawnsnd = pygame.mixer.Sound('music/PMB_Spawn_01.ogg')
-#enemy = [pygame.image.load('images/enemy/Frame 1.png'), pygame.image.load('images/enemy/Frame 2.png'),
-#         pygame.image.load('images/enemy/Frame 3.png'), pygame.image.load('images/enemy/Frame 4.png'),
-#         pygame.image.load('images/enemy/Frame 5.png'), pygame.image.load('images/enemy/Frame 6.png'),
-#         pygame.image.load('images/enemy/Frame 7.png'), pygame.image.load('images/enemy/Frame 8.png'),
-#         pygame.image.load('images/enemy/Frame 9.png'), pygame.image.load('images/enemy/Frame 10.png'),
-#         pygame.image.load('images/enemy/Frame 11.png'), pygame.image.load('images/enemy/Frame 12.png'),
-#         pygame.image.load('images/enemy/Frame 13.png'), pygame.image.load('images/enemy/Frame 14.png'),
-#         pygame.image.load('images/enemy/Frame 15.png'), pygame.image.load('images/enemy/Frame 16.png'),
-#         pygame.image.load('images/enemy/Frame 17.png'), pygame.image.load('images/enemy/Frame 18.png'),
-#         pygame.image.load('images/enemy/Frame 19.png'), pygame.image.load('images/enemy/Frame 20.png'),
-#         pygame.image.load('images/enemy/Frame 21.png'), pygame.image.load('images/enemy/Frame 22.png'),
-#         pygame.image.load('images/enemy/Frame 23.png'), pygame.image.load('images/enemy/Frame 24.png'),
-#         pygame.image.load('images/enemy/Frame 25.png'), pygame.image.load('images/enemy/Frame 26.png'),
-#         pygame.image.load('images/enemy/Frame 27.png'), pygame.image.load('images/enemy/Frame 28.png'),
-#         pygame.image.load('images/enemy/Frame 29.png'), pygame.image.load('images/enemy/Frame 30.png'),
-#         pygame.image.load('images/enemy/Frame 31.png'), pygame.image.load('images/enemy/Frame 32.png'),
-#         pygame.image.load('images/enemy/Frame 33.png'), pygame.image.load('images/enemy/Frame 34.png'),
-#         pygame.image.load('images/enemy/Frame 35.png'), pygame.image.load('images/enemy/Frame 36.png'),
-#         pygame.image.load('images/enemy/Frame 37.png'), pygame.image.load('images/enemy/Frame 38.png'),
-#         pygame.image.load('images/enemy/Frame 39.png'), pygame.image.load('images/enemy/Frame 40.png'),
-#         pygame.image.load('images/enemy/Frame 41.png'), pygame.image.load('images/enemy/Frame 42.png'),
-#         pygame.image.load('images/enemy/Frame 43.png'), pygame.image.load('images/enemy/Frame 44.png'),
-#         pygame.image.load('images/enemy/Frame 45.png'), pygame.image.load('images/enemy/Frame 46.png'),
-#         pygame.image.load('images/enemy/Frame 47.png'), pygame.image.load('images/enemy/Frame 48.png'),
-#         pygame.image.load('images/enemy/Frame 49.png'), pygame.image.load('images/enemy/Frame 50.png'),
-#         pygame.image.load('images/enemy/Frame 51.png'), pygame.image.load('images/enemy/Frame 52.png'),
-#         pygame.image.load('images/enemy/Frame 53.png'), pygame.image.load('images/enemy/Frame 54.png'),
-#         pygame.image.load('images/enemy/Frame 55.png'), pygame.image.load('images/enemy/Frame 56.png'),
-#         pygame.image.load('images/enemy/Frame 57.png'), pygame.image.load('images/enemy/Frame 58.png'),
-#         pygame.image.load('images/enemy/Frame 59.png'), pygame.image.load('images/enemy/Frame 60.png'),
-#         pygame.image.load('images/enemy/Frame 61.png'), pygame.image.load('images/enemy/Frame 62.png'),
-#         pygame.image.load('images/enemy/Frame 63.png'), pygame.image.load('images/enemy/Frame 64.png'),
-#         pygame.image.load('images/enemy/Frame 65.png'), pygame.image.load('images/enemy/Frame 66.png'),
-#         pygame.image.load('images/enemy/Frame 67.png'), pygame.image.load('images/enemy/Frame 68.png'),
-#         pygame.image.load('images/enemy/Frame 69.png'), pygame.image.load('images/enemy/Frame 70.png'),
-#         pygame.image.load('images/enemy/Frame 71.png'), pygame.image.load('images/enemy/Frame 72.png'),
-#         pygame.image.load('images/enemy/Frame 73.png'), pygame.image.load('images/enemy/Frame 74.png'),
-#         pygame.image.load('images/enemy/Frame 75.png'), pygame.image.load('images/enemy/Frame 76.png'),
-#         pygame.image.load('images/enemy/Frame 77.png'), pygame.image.load('images/enemy/Frame 78.png'),
-#         pygame.image.load('images/enemy/Frame 79.png'), pygame.image.load('images/enemy/Frame 80.png'),
-#         pygame.image.load('images/enemy/Frame 81.png'), pygame.image.load('images/enemy/Frame 82.png'),
-#         pygame.image.load('images/enemy/Frame 83.png'), pygame.image.load('images/enemy/Frame 84.png'),
-#         pygame.image.load('images/enemy/Frame 85.png'), pygame.image.load('images/enemy/Frame 86.png'),
-#         pygame.image.load('images/enemy/Frame 87.png'), pygame.image.load('images/enemy/Frame 88.png'),
-#         pygame.image.load('images/enemy/Frame 89.png'), pygame.image.load('images/enemy/Frame 90.png'),
-#         pygame.image.load('images/enemy/Frame 91.png'), pygame.image.load('images/enemy/Frame 92.png'),
-#         pygame.image.load('images/enemy/Frame 93.png'), pygame.image.load('images/enemy/Frame 94.png'),
-#         pygame.image.load('images/enemy/Frame 95.png'), pygame.image.load('images/enemy/Frame 96.png'),
-#         pygame.image.load('images/enemy/Frame 97.png'), pygame.image.load('images/enemy/Frame 98.png'),
-#         pygame.image.load('images/enemy/Frame 99.png'), pygame.image.load('images/enemy/Frame 100.png'),
-#         pygame.image.load('images/enemy/Frame 101.png'), pygame.image.load('images/enemy/Frame 102.png'),
-#         pygame.image.load('images/enemy/Frame 103.png'), pygame.image.load('images/enemy/Frame 104.png'),
-#         pygame.image.load('images/enemy/Frame 105.png'), pygame.image.load('images/enemy/Frame 106.png'),
-#         pygame.image.load('images/enemy/Frame 107.png'), pygame.image.load('images/enemy/Frame 108.png'),
-#         pygame.image.load('images/enemy/Frame 109.png'), pygame.image.load('images/enemy/Frame 110.png'),
-#         pygame.image.load('images/enemy/Frame 111.png'), pygame.image.load('images/enemy/Frame 112.png'),
-#         pygame.image.load('images/enemy/Frame 113.png'), pygame.image.load('images/enemy/Frame 114.png'),
-#         pygame.image.load('images/enemy/Frame 115.png'), pygame.image.load('images/enemy/Frame 116.png'),
-#         pygame.image.load('images/enemy/Frame 117.png'), pygame.image.load('images/enemy/Frame 118.png'),
-#         pygame.image.load('images/enemy/Frame 119.png'), pygame.image.load('images/enemy/Frame 120.png')]
+enemy = [pygame.image.load('images/enemy/Frame 1.png'), pygame.image.load('images/enemy/Frame 2.png'),
+         pygame.image.load('images/enemy/Frame 3.png'), pygame.image.load('images/enemy/Frame 4.png'),
+         pygame.image.load('images/enemy/Frame 5.png'), pygame.image.load('images/enemy/Frame 6.png'),
+         pygame.image.load('images/enemy/Frame 7.png'), pygame.image.load('images/enemy/Frame 8.png'),
+         pygame.image.load('images/enemy/Frame 9.png'), pygame.image.load('images/enemy/Frame 10.png'),
+         pygame.image.load('images/enemy/Frame 11.png'), pygame.image.load('images/enemy/Frame 12.png'),
+         pygame.image.load('images/enemy/Frame 13.png'), pygame.image.load('images/enemy/Frame 14.png'),
+         pygame.image.load('images/enemy/Frame 15.png'), pygame.image.load('images/enemy/Frame 16.png'),
+         pygame.image.load('images/enemy/Frame 17.png'), pygame.image.load('images/enemy/Frame 18.png'),
+         pygame.image.load('images/enemy/Frame 19.png'), pygame.image.load('images/enemy/Frame 20.png'),
+         pygame.image.load('images/enemy/Frame 21.png'), pygame.image.load('images/enemy/Frame 22.png'),
+         pygame.image.load('images/enemy/Frame 23.png'), pygame.image.load('images/enemy/Frame 24.png'),
+         pygame.image.load('images/enemy/Frame 25.png'), pygame.image.load('images/enemy/Frame 26.png'),
+         pygame.image.load('images/enemy/Frame 27.png'), pygame.image.load('images/enemy/Frame 28.png'),
+         pygame.image.load('images/enemy/Frame 29.png'), pygame.image.load('images/enemy/Frame 30.png'),
+         pygame.image.load('images/enemy/Frame 31.png'), pygame.image.load('images/enemy/Frame 32.png'),
+         pygame.image.load('images/enemy/Frame 33.png'), pygame.image.load('images/enemy/Frame 34.png'),
+         pygame.image.load('images/enemy/Frame 35.png'), pygame.image.load('images/enemy/Frame 36.png'),
+         pygame.image.load('images/enemy/Frame 37.png'), pygame.image.load('images/enemy/Frame 38.png'),
+         pygame.image.load('images/enemy/Frame 39.png'), pygame.image.load('images/enemy/Frame 40.png'),
+         pygame.image.load('images/enemy/Frame 41.png'), pygame.image.load('images/enemy/Frame 42.png'),
+         pygame.image.load('images/enemy/Frame 43.png'), pygame.image.load('images/enemy/Frame 44.png'),
+         pygame.image.load('images/enemy/Frame 45.png'), pygame.image.load('images/enemy/Frame 46.png'),
+         pygame.image.load('images/enemy/Frame 47.png'), pygame.image.load('images/enemy/Frame 48.png'),
+         pygame.image.load('images/enemy/Frame 49.png'), pygame.image.load('images/enemy/Frame 50.png'),
+         pygame.image.load('images/enemy/Frame 51.png'), pygame.image.load('images/enemy/Frame 52.png'),
+         pygame.image.load('images/enemy/Frame 53.png'), pygame.image.load('images/enemy/Frame 54.png'),
+         pygame.image.load('images/enemy/Frame 55.png'), pygame.image.load('images/enemy/Frame 56.png'),
+         pygame.image.load('images/enemy/Frame 57.png'), pygame.image.load('images/enemy/Frame 58.png'),
+         pygame.image.load('images/enemy/Frame 59.png'), pygame.image.load('images/enemy/Frame 60.png'),
+         pygame.image.load('images/enemy/Frame 61.png'), pygame.image.load('images/enemy/Frame 62.png'),
+         pygame.image.load('images/enemy/Frame 63.png'), pygame.image.load('images/enemy/Frame 64.png'),
+         pygame.image.load('images/enemy/Frame 65.png'), pygame.image.load('images/enemy/Frame 66.png'),
+         pygame.image.load('images/enemy/Frame 67.png'), pygame.image.load('images/enemy/Frame 68.png'),
+         pygame.image.load('images/enemy/Frame 69.png'), pygame.image.load('images/enemy/Frame 70.png'),
+         pygame.image.load('images/enemy/Frame 71.png'), pygame.image.load('images/enemy/Frame 72.png'),
+         pygame.image.load('images/enemy/Frame 73.png'), pygame.image.load('images/enemy/Frame 74.png'),
+         pygame.image.load('images/enemy/Frame 75.png'), pygame.image.load('images/enemy/Frame 76.png'),
+         pygame.image.load('images/enemy/Frame 77.png'), pygame.image.load('images/enemy/Frame 78.png'),
+         pygame.image.load('images/enemy/Frame 79.png'), pygame.image.load('images/enemy/Frame 80.png'),
+         pygame.image.load('images/enemy/Frame 81.png'), pygame.image.load('images/enemy/Frame 82.png'),
+         pygame.image.load('images/enemy/Frame 83.png'), pygame.image.load('images/enemy/Frame 84.png'),
+         pygame.image.load('images/enemy/Frame 85.png'), pygame.image.load('images/enemy/Frame 86.png'),
+         pygame.image.load('images/enemy/Frame 87.png'), pygame.image.load('images/enemy/Frame 88.png'),
+         pygame.image.load('images/enemy/Frame 89.png'), pygame.image.load('images/enemy/Frame 90.png'),
+         pygame.image.load('images/enemy/Frame 91.png'), pygame.image.load('images/enemy/Frame 92.png'),
+         pygame.image.load('images/enemy/Frame 93.png'), pygame.image.load('images/enemy/Frame 94.png'),
+         pygame.image.load('images/enemy/Frame 95.png'), pygame.image.load('images/enemy/Frame 96.png'),
+         pygame.image.load('images/enemy/Frame 97.png'), pygame.image.load('images/enemy/Frame 98.png'),
+         pygame.image.load('images/enemy/Frame 99.png'), pygame.image.load('images/enemy/Frame 100.png'),
+         pygame.image.load('images/enemy/Frame 101.png'), pygame.image.load('images/enemy/Frame 102.png'),
+         pygame.image.load('images/enemy/Frame 103.png'), pygame.image.load('images/enemy/Frame 104.png'),
+         pygame.image.load('images/enemy/Frame 105.png'), pygame.image.load('images/enemy/Frame 106.png'),
+         pygame.image.load('images/enemy/Frame 107.png'), pygame.image.load('images/enemy/Frame 108.png'),
+         pygame.image.load('images/enemy/Frame 109.png'), pygame.image.load('images/enemy/Frame 110.png'),
+         pygame.image.load('images/enemy/Frame 111.png'), pygame.image.load('images/enemy/Frame 112.png'),
+         pygame.image.load('images/enemy/Frame 113.png'), pygame.image.load('images/enemy/Frame 114.png'),
+         pygame.image.load('images/enemy/Frame 115.png'), pygame.image.load('images/enemy/Frame 116.png'),
+         pygame.image.load('images/enemy/Frame 117.png'), pygame.image.load('images/enemy/Frame 118.png'),
+         pygame.image.load('images/enemy/Frame 119.png'), pygame.image.load('images/enemy/Frame 120.png')]
 score: int = 0
 fps = 60
 timer = 0
@@ -168,16 +168,18 @@ class projectile(object):
         self.vel = 5
     def draw(self, win):
         win.blit(projectile_img, (self.x, self.y))
-class enemy(object):
+
+
+class yes(object):
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.vel = 4
-        self.timer
+        self.timer = 0
     def draw(self, win):
-        win.blit(normal_bad, (self.x, self.y))
+        win.blit(enemy[self.timer], (self.x, self.y))
 
 pizza = player(640 - 32, 720, 64, 64)
 
@@ -276,6 +278,20 @@ def game():
                 bullets.append(
                     projectile(pizza.x + 13, pizza.y, 25, 74))
                 #shootsnd.play()
+        for foo in enemy_list:
+            if foo.y < 720:
+                foo.y += foo.vel
+                foo.timer += 1
+                if 120 <= foo.timer:
+                    foo.timer = 0
+            else:
+                enemy_list.pop(enemy_list.index(foo))
+        #oh_my_eggs = time.time()
+        if True:
+            oh_my_eggs = time.time()
+            enemy_list.append(
+                yes(random.randint(0, 1280), -62, 62, 62)
+            )
         if timer == 60:
             timer = 0
         fpsc = (fpsavg // 1)
@@ -289,6 +305,8 @@ def redrawgamewindow():
     win.blit(bg1, (0, 0))
     for bullet in bullets:
         bullet.draw(win)
+    for foo in enemy_list:
+        foo.draw(win)
     pizza.draw(win)
     # font = pygame.font.Font("fonts/Ailerons-Typeface.otf", 20)
     font = pygame.font.Font("fonts/BurbankBigCondensed-Black.otf", 20)
