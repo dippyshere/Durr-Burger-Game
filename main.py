@@ -11,11 +11,10 @@ __version__ = 0.41
 import pygame
 import sys
 import os
-from pygame.locals import *
+# from pygame.locals import *
 import platform
 import random
 import time
-import datetime as timedelta
 
 pygame.init()
 
@@ -29,7 +28,8 @@ elif not (os.name == 'nt') and not ('darwin' in os.name):
     print('this game may not function as intended on your platform, or may function to varying degrees of success.')
 if 'darwin' in os.name:
     print(
-        'this game may not work on your platform as it is mostly untested on Mac OS. You may proceed, however I can not guarantee any success.')
+        "this game may not work on your platform as it is mostly untested on Mac OS. You may proceed, however I can "
+        "not guarantee any success.")
 
 clock = pygame.time.Clock()
 gcache = globals()
@@ -119,11 +119,11 @@ enemy = [pygame.image.load('images/enemy/Frame 1.png'), pygame.image.load('image
          pygame.image.load('images/enemy/Frame 117.png'), pygame.image.load('images/enemy/Frame 118.png'),
          pygame.image.load('images/enemy/Frame 119.png'), pygame.image.load('images/enemy/Frame 120.png')]
 score: int = 0
-fps = 60
+fps = 600
 timer = 0
 fpsc = 60
 frm_time = 0.0
-is_a_crashed = False
+is_a_crashed: bool = False
 fpsavg = 0
 cooldown: float = float(0)
 bullets: List[Any] = []
@@ -147,13 +147,18 @@ konami: List[bool] = [True, True, True, True, True, True, True, True, True, True
 
 
 class player(object):
-    def __init__(self, x, y, width, height):
+    def __init__(self, x: object, y: object, width: object, height: object) -> object:
+        """
+
+        :rtype: object
+        """
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.vel = 6
         self.die = False
+
     def draw(self, win):
         win.blit(player_img, (self.x, self.y))
 
@@ -165,6 +170,7 @@ class projectile(object):
         self.width = width
         self.height = height
         self.vel = 5
+
     def draw(self, win):
         win.blit(projectile_img, (self.x, self.y))
 
@@ -177,13 +183,15 @@ class yes(object):
         self.height = height
         self.vel = 2
         self.timer = 0
+
     def draw(self, win):
         win.blit(enemy[self.timer], (self.x, self.y))
 
-pizza = player(640 - 32, 720, 64, 64)
+
+pizza: player = player(640 - 32, 720, 64, 64)
 
 
-def start():
+def start() -> object:
     pygame.display.set_icon(icon)
     music = pygame.mixer.music.load('music/ambiance.ogg')
     pygame.mixer.music.play(-1)
@@ -238,8 +246,8 @@ def game():
                 pygame.quit()
                 sys.exit()
     pizza.y = 600
-    while not (is_a_crashed):
-        mouse = pygame.mouse.get_pos()
+    while not is_a_crashed:
+        mouse: None = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         fpsavg = clock.get_fps()
         timer += 1
@@ -277,21 +285,22 @@ def game():
                 cooldown = time.time()
                 bullets.append(
                     projectile(pizza.x + 13, pizza.y, 25, 74))
-                #shootsnd.play()
+                shootsnd.play()
         for foo in enemy_list:
             if foo.y < 720:
                 foo.y += foo.vel
                 foo.timer += 1
                 if 120 <= foo.timer:
-                    foo.timer = 0
+                    foo.timer: int = 0
             else:
                 assert isinstance(enemy_list.pop, object)
+                assert isinstance(enemy_list, object)
+                # noinspection PyCallingNonCallable
                 enemy_list.pop(enemy_list.index(foo))
-        if not float(random.uniform(1.25, 2.95)) > time.time() - oh_my_eggs:
+        if not float(random.uniform(1.55, 3.55)) > time.time() - oh_my_eggs:
             oh_my_eggs = time.time()
             enemy_list.append(
-                yes(random.randint(100, 1180), random.randint(-100, -62), 62, 62)
-            )
+                yes(random.randint(100, 1118), random.randint(-150, -62), 62, 62))
         if timer == 60:
             timer = 0
         fpsc = (fpsavg // 1)
