@@ -1,5 +1,12 @@
 # Durr Burger Game
-mini game present in fn when entering konami code during black hole event or when watching world cup while it was not available
+
+What is it?
+===
+This game is based on the mini game present in Fortnite either when attempting to view the world cup while it was not broadcasting in BR or when entering the Konami Code on the black hole screen during 'The End' event.
+
+Notice
+===
+Since this game is based of the mini game, I've tried to stay faithful to as many aspects as I could, this includes sound extracted from the game, some altered to fit as they did in the game. All images were recreated in Illustrator. These images were then compressed with http://compress-or-die.com/ and https://compresspng.com/. The font 'Burbank Big Condensed' and the 'Burbank' font is trademarked and copyrighted by House Industries.
 
 Fancy Badges
 ====
