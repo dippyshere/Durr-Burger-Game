@@ -22,6 +22,10 @@ Simple! To grab the latest release, head to the releases tab by [clicking here](
 
 ### Notice
 
+Dependencies/Requirements are:
+- Pygame [Tested with 1.9.6]
+- Python Interpreter [Tested with 3.7.5]
+
 Since this game is based of the mini game, I've tried to stay faithful to as many aspects as I could, this includes sound extracted from the game, some altered to fit as they did in the game. All images were recreated in Illustrator. These images were then compressed with http://compress-or-die.com/ and https://compresspng.com/. The font 'Burbank Big Condensed' and the 'Burbank' font is trademarked and copyrighted by House Industries.
 
 ## Fancy Badges
