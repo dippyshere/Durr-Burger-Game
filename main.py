@@ -1,7 +1,7 @@
 """
 string
 """
-from typing import Union, List
+from typing import Union, List, Any
 
 from pygame.font import FontType
 from pygame.ftfont import Font
@@ -126,7 +126,8 @@ frm_time = 0.0
 is_a_crashed = False
 fpsavg = 0
 cooldown: float = float(0)
-bullets = []
+bullets: List[Any] = []
+enemy_list: List[Any] = []
 exit_state = 'normal'
 
 icon = pygame.image.load('images/boss.png')
@@ -167,7 +168,16 @@ class projectile(object):
         self.vel = 5
     def draw(self, win):
         win.blit(projectile_img, (self.x, self.y))
-
+class enemy(object):
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.vel = 4
+        self.timer
+    def draw(self, win):
+        win.blit(normal_bad, (self.x, self.y))
 
 pizza = player(640 - 32, 720, 64, 64)
 
@@ -213,20 +223,13 @@ def start():
 
 
 def game():
-    global projectiles
-    global timer
-    global fpsavg
-    global fpsc
-    global frm_time
-    global exit_state
-    global cooldown
-    global bullets
+    global projectiles, timer, fpsavg, fpsc, frm_time, exit_state, cooldown, bullets, enemy_list
     while pizza.y > 600:
         pizza.y -= 0.98960910440376
         clock.tick(fps)
         redrawgamewindow()
         fpsavg = clock.get_fps()
-        fpsc = (fpsavg // 1) + 2
+        fpsc = (fpsavg // 1)
         frm_time = clock.get_time()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -275,7 +278,7 @@ def game():
                 #shootsnd.play()
         if timer == 60:
             timer = 0
-        fpsc = (fpsavg // 1) + 2
+        fpsc = (fpsavg // 1)
         frm_time = clock.get_time()
         clock.tick(fps)
         redrawgamewindow()
@@ -287,19 +290,22 @@ def redrawgamewindow():
     for bullet in bullets:
         bullet.draw(win)
     pizza.draw(win)
-    font = pygame.font.Font("fonts/Ailerons-Typeface.otf", 20)
-    text = font.render("FPS:" + str(fpsc), True, white)
+    # font = pygame.font.Font("fonts/Ailerons-Typeface.otf", 20)
+    font = pygame.font.Font("fonts/BurbankBigCondensed-Black.otf", 20)
+    text = font.render("FPS: " + str(fpsc), True, white)
     win.blit(text, (5, 5))
-    text = font.render("Frame time:" + str(frm_time) + 'ms', True, white)
+    text = font.render("Frame time: " + str(frm_time) + 'ms', True, white)
     win.blit(text, (5, 25))
-    text = font.render("Projectiles on screen:" + str(len(bullets)), True, white)
+    text = font.render("Projectiles on screen: " + str(len(bullets)), True, white)
     win.blit(text, (5, 45))
-    text = font.render("Pizza X:" + str(pizza.x) + ' Pizza Y: ' + str(pizza.y), True, white)
+    text = font.render("Enemies on screen: " + str(len(enemy_list)), True, white)
     win.blit(text, (5, 65))
-    text = font.render('Display Driver: ' + str(pygame.display.get_driver()), True, white)
+    text = font.render("Pizza X: " + str(pizza.x) + ' Pizza Y: ' + str(pizza.y), True, white)
     win.blit(text, (5, 85))
-    text = font.render('time.time(): ' + str(time.time()), True, white)
+    text = font.render('Display Driver: ' + str(pygame.display.get_driver()), True, white)
     win.blit(text, (5, 105))
+    text = font.render('time.time(): ' + str(time.time()), True, white)
+    win.blit(text, (5, 125))
     smallText: Union[Font, FontType] = pygame.font.Font("fonts/BurbankBigCondensed-Black.otf", 40)
     textSurf, textRect = text_objects('High Score', smallText, red)
     textRect.center = (1280 // 2, 35)
