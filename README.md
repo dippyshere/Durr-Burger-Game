@@ -17,6 +17,9 @@ There are a number of keyboard styles available, with custom ones comming soon. 
 | Unpause | ENTER / RETURN |
 | UI Interaction | Mouse Left |
 
+## How do I download this???
+Simple! To grab the latest release, head to the releases tab by clicking here, or to grab the latest version, clone this repo
+
 ### Notice
 
 Since this game is based of the mini game, I've tried to stay faithful to as many aspects as I could, this includes sound extracted from the game, some altered to fit as they did in the game. All images were recreated in Illustrator. These images were then compressed with http://compress-or-die.com/ and https://compresspng.com/. The font 'Burbank Big Condensed' and the 'Burbank' font is trademarked and copyrighted by House Industries.
