@@ -24,7 +24,7 @@ Simple! To grab the latest release, head to the releases tab by [clicking here](
 
 Since this game is based of the mini game, I've tried to stay faithful to as many aspects as I could, this includes sound extracted from the game, some altered to fit as they did in the game. All images were recreated in Illustrator. These images were then compressed with http://compress-or-die.com/ and https://compresspng.com/. The font 'Burbank Big Condensed' and the 'Burbank' font is trademarked and copyrighted by House Industries.
 
-##Fancy Badges
+## Fancy Badges
 ![badge](https://img.shields.io/github/repo-size/dippyshere/Durr-Burger-game?label=Repository%20Size)
 ![badge](https://img.shields.io/github/languages/count/dippyshere/Durr-Burger-Game)
 ![badge](https://img.shields.io/github/languages/top/dippyshere/Durr-Burger-Game)
