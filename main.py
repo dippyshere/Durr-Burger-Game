@@ -119,7 +119,7 @@ enemy = [pygame.image.load('images/enemy/Frame 1.png'), pygame.image.load('image
          pygame.image.load('images/enemy/Frame 117.png'), pygame.image.load('images/enemy/Frame 118.png'),
          pygame.image.load('images/enemy/Frame 119.png'), pygame.image.load('images/enemy/Frame 120.png')]
 score: int = 0
-fps = 600
+fps = 60
 timer = 0
 fpsc = 60
 frm_time = 0.0
@@ -147,6 +147,8 @@ konami: List[bool] = [True, True, True, True, True, True, True, True, True, True
 
 
 class player(object):
+    death: bool
+
     def __init__(self, x: object, y: object, width: object, height: object) -> object:
         """
 
@@ -157,9 +159,10 @@ class player(object):
         self.width = width
         self.height = height
         self.vel = 6
-        self.die = False
+        self.death = False
+        self.hitbox = pygame.Rect(self.x, self.y, self.width, self.height)
 
-    def draw(self, win):
+    def draw(self, win: object) -> object:
         win.blit(player_img, (self.x, self.y))
 
 
@@ -170,6 +173,7 @@ class projectile(object):
         self.width = width
         self.height = height
         self.vel = 5
+        self.hitbox = pygame.Rect(self.x, self.y, self.width, self.height)
 
     def draw(self, win):
         win.blit(projectile_img, (self.x, self.y))
@@ -183,6 +187,8 @@ class yes(object):
         self.height = height
         self.vel = 2
         self.timer = 0
+        assert isinstance(self.height, object)
+        self.hitbox = pygame.Rect(self.x, self.y, self.width, self.height)
 
     def draw(self, win):
         win.blit(enemy[self.timer], (self.x, self.y))
@@ -271,11 +277,12 @@ def game():
             exit_state = 'normal'
         if keys[pygame.K_EQUALS] or keys[pygame.K_p]:
             pause()
-        if keys[pygame.K_a] and pizza.x > pizza.vel or keys[pygame.K_LEFT] and pizza.x > pizza.vel:
-            pizza.x -= pizza.vel
-        if keys[pygame.K_d] and pizza.x < 1280 - pizza.width - pizza.vel or keys[
-            pygame.K_RIGHT] and pizza.x < 1280 - pizza.width - pizza.vel:
-            pizza.x += pizza.vel
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+            if pizza.x > pizza.vel and not pizza.death:
+                pizza.x -= pizza.vel
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+            if pizza.x < 1280 - pizza.width - pizza.vel and not pizza.death:
+                pizza.x += pizza.vel
         for bullet in bullets:
             if bullet.y > -74:
                 bullet.y -= bullet.vel
@@ -283,10 +290,11 @@ def game():
                 bullets.pop(bullets.index(bullet))
         if len(bullets) < 50 and time.time() - cooldown > float(0.622):
             if keys[pygame.K_UP] or keys[pygame.K_w] or keys[pygame.K_SPACE]:
-                cooldown = time.time()
-                bullets.append(
-                    projectile(pizza.x + 13, pizza.y, 25, 74))
-                shootsnd.play()
+                if not pizza.death:
+                    cooldown = time.time()
+                    bullets.append(
+                        projectile(pizza.x + 13, pizza.y, 25, 74))
+                    shootsnd.play()
         for foo in enemy_list:
             if foo.y < 720:
                 foo.y += foo.vel
@@ -298,12 +306,30 @@ def game():
                 assert isinstance(enemy_list, object)
                 # noinspection PyCallingNonCallable
                 enemy_list.pop(enemy_list.index(foo))
+            #if pygame.Rect.colliderect(pizza.hitbox, pygame.Rect(foo.x, foo.y, foo.width, foo.height)):
+            assert isinstance(foo.width, object)
+            if foo.x < pizza.x < foo.x + foo.width and foo.y < pizza.y < foo.y + foo.width or foo.x < pizza.x + pizza.width < foo.x + foo.width and foo.y < pizza.y + pizza.height < foo.y + foo.width:
+                print('hit')
+                pizza.death = True
+                pizza.x = 640 - 3
+                pizza.y = 720 + 98.960910440376
+        for foo in enemy_list:
+            for bullet in bullets:
+                if foo.x < bullet.x < foo.x + foo.width and foo.y < bullet.y < foo.y + foo.width or foo.x < bullet.x + bullet.width < foo.x + foo.width and foo.y < bullet.y + bullet.height < foo.y + foo.width:
+                    enemy_list.pop(enemy_list.index(foo))
+                    bullets.pop(bullets.index(bullet))
         if not float(random.uniform(1.55, 3.55)) > time.time() - oh_my_eggs:
             oh_my_eggs = time.time()
             enemy_list.append(
                 yes(random.randint(100, 1118), random.randint(-150, -62), 62, 62))
         if timer == 60:
             timer = 0
+        if pizza.death:
+            if pizza.y > 600:
+                pizza.y -= 0.98960910440376
+            else:
+                pizza.death = False
+                pizza.y = 600
         fpsc = (fpsavg // 1)
         frm_time = clock.get_time()
         clock.tick(fps)
