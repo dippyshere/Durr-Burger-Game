@@ -11,6 +11,7 @@ You will start the game on an empty black hole screen, to start the game, simply
   <summary>Konami Code on Keyboard</summary>
   
   UP, UP, DOWN, DOWN, LEFT, RIGHT, LEFT, RIGHT, B, A, ENTER
+  
   ˄, ˄, ˅, ˅, <, >, <, >, B, A, RETURN / ENTER
   
   
