@@ -1,4 +1,4 @@
-# Durr Burger Game
+# ![](durr.gif) Durr Burger Game ![](durr.gif)
 
 ## What is it?
 
@@ -6,7 +6,20 @@ This game is based on the mini game present in Fortnite either when attempting t
 
 ## How to play?
 
-There are a number of keyboard styles available, with custom ones comming soon. The default keybinds are as follows:
+You will start the game on an empty black hole screen, to start the game, simply enter the Konami Code on your keyboard. If you don't know it, its below.
+<details>
+  <summary>Konami Code on Keyboard</summary>
+  
+  UP, UP, DOWN, DOWN, LEFT, RIGHT, LEFT, RIGHT, B, A, ENTER
+  
+  ˄, ˄, ˅, ˅, <, >, <, >, B, A, RETURN / ENTER
+  
+  
+</details>
+
+To progress through the game, you have to shoot your projectile at the durr burgers. You control the pizza at the bottom of the screen. There are two sections to the game, the normal one with lots of little durr burgers floating down the screen, and a boss fight with one big durr burger. Hit him 25 times to defeat him. Once you defeat him, the phases restart.
+
+As for keyboard controls, there are a number of keyboard styles available, with custom ones comming soon. The default keybinds are as follows:
 
 | Action | Default Keybind |
 | --- | --- |
