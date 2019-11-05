@@ -320,7 +320,7 @@ def game():
             else:
                 bullets.pop(bullets.index(bullet))
                 shots_missed += 1
-        if len(bullets) < 50 and time.time() - cooldown > float(0.622):
+        if len(bullets) < 50 and time.time() - cooldown > float(0.522):
             if keys[pygame.K_UP] or keys[pygame.K_w] or keys[pygame.K_SPACE]:
                 if not pizza.death:
                     shots_fired_total += 1
@@ -342,14 +342,13 @@ def game():
                 burgers_missed += 1
             #if pygame.Rect.colliderect(pizza.hitbox, pygame.Rect(foo.x, foo.y, foo.width, foo.height)):
             assert isinstance(foo.width, object)
-            if foo.x < pizza.x < foo.x + foo.width and foo.y < pizza.y < foo.y + foo.width or foo.x < pizza.x + pizza.width < foo.x + foo.width and foo.y < pizza.y + pizza.height < foo.y + foo.width:
-                if not pizza.invulnerable:
-                    pizza.invulnerable = True
-                    print('hit')
-                    pizza.death = True
-                    pizza.x = 640 - 32
-                    pizza.y = 720 + 98.960910440376
-                    deathsnd.play()
+            if foo.x < pizza.x < foo.x + foo.width and foo.y < pizza.y < foo.y + foo.width or foo.x < pizza.x + pizza.width < foo.x + foo.width and foo.y < pizza.y + pizza.height < foo.y + foo.width and not pizza.invulnerable and not pizza.death:
+                pizza.invulnerable = True
+                print('hit')
+                pizza.death = True
+                pizza.x = 640 - 32
+                pizza.y = 720 + 98.960910440376
+                deathsnd.play()
         for foo in enemy_list:
             for bullet in bullets:
                 if foo.x < bullet.x < foo.x + foo.width and foo.y < bullet.y < foo.y + foo.width or foo.x < bullet.x + bullet.width < foo.x + foo.width and foo.y < bullet.y + bullet.height < foo.y + foo.width:
@@ -364,14 +363,12 @@ def game():
             foo.lifespan -= 1
             if foo.lifespan <= 0:
                 splat_list.pop(splat_list.index(foo))
-        if not float(random.uniform(1.55, 3.55)) > time.time() - oh_my_eggs:
+        if not time.time() - oh_my_eggs < float(random.uniform(1.55, 3.55)):
             oh_my_eggs = time.time()
             enemy_list.append(
                 yes(random.randint(62, 1168), random.randint(-150, -62), 62, 62))
         if timer == 60:
             timer = 0
-        if pizza.y < 610:
-            pizza.invulnerable = True
         if pizza.death:
             if pizza.y > 600:
                 pizza.y -= 0.98960910440376
