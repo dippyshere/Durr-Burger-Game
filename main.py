@@ -1,7 +1,7 @@
 """
 string
 """
-from typing import Union, List, Any
+from typing import Union, List, Any, Tuple
 
 from pygame.font import FontType
 from pygame.ftfont import Font
@@ -18,7 +18,7 @@ import time
 
 pygame.init()
 
-win = pygame.display.set_mode((1280, 720))
+win: None = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Durr Burger Mini Game")
 
 # if using darwin vs nt (mac vs new tech (windows))
@@ -55,9 +55,12 @@ exitcnfrm_c = pygame.image.load('images/quit press.png')
 back_a = pygame.image.load('images/back.png')
 back_b = pygame.image.load('images/back hover.png')
 back_c = pygame.image.load('images/back press.png')
+splatter: object = pygame.image.load('images/splat.png')
 shootsnd = pygame.mixer.Sound('music/PMB_Shoot_01.ogg')
 pausesnd = pygame.mixer.Sound('music/nsmbwiiPause.ogg')
 spawnsnd = pygame.mixer.Sound('music/PMB_Spawn_01.ogg')
+deathsnd = pygame.mixer.Sound('music/PMB_Death_01.ogg')
+hitsnd = pygame.mixer.Sound('music/PMB_Explo_01.ogg')
 enemy = [pygame.image.load('images/enemy/Frame 1.png'), pygame.image.load('images/enemy/Frame 2.png'),
          pygame.image.load('images/enemy/Frame 3.png'), pygame.image.load('images/enemy/Frame 4.png'),
          pygame.image.load('images/enemy/Frame 5.png'), pygame.image.load('images/enemy/Frame 6.png'),
@@ -121,13 +124,19 @@ enemy = [pygame.image.load('images/enemy/Frame 1.png'), pygame.image.load('image
 score: int = 0
 fps = 60
 timer = 0
+burgers_missed = 0
 fpsc = 60
 frm_time = 0.0
+shots_fired_total = 0
+shots_hit = 0
 is_a_crashed: bool = False
 fpsavg = 0
+shots_missed = 0
 cooldown: float = float(0)
 bullets: List[Any] = []
 enemy_list: List[Any] = []
+splat_list: List[Any] = []
+percentage_hit = 0.0
 exit_state = 'normal'
 
 icon = pygame.image.load('images/boss.png')
@@ -141,7 +150,8 @@ red = (200, 0, 0)
 bright_red = (255, 0, 0)
 bright_green = (0, 255, 0)
 bright_blue = (0, 255, 255)
-purple = (255, 0, 255)
+purple: Tuple[int, int, int] = (255, 0, 255)
+epic_colour = (40, 52, 72)
 
 konami: List[bool] = [True, True, True, True, True, True, True, True, True, True]
 
@@ -160,6 +170,7 @@ class player(object):
         self.height = height
         self.vel = 6
         self.death = False
+        self.invulnerable = False
         self.hitbox = pygame.Rect(self.x, self.y, self.width, self.height)
 
     def draw(self, win: object) -> object:
@@ -194,7 +205,23 @@ class yes(object):
         win.blit(enemy[self.timer], (self.x, self.y))
 
 
+class splat(object):
+    def __init__(self, x: object, y: object, width: object, height: object) -> object:
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.lifespan = 30
+
+    def draw(self, win):
+        win.blit(splatter, (self.x, self.y))
+        font = pygame.font.Font("fonts/BurbankBigCondensed-Black.otf", 20)
+        text = font.render("100", True, purple)
+        win.blit(text, (self.x + self.width // 4, self.y + 64 + 5))
+
+
 pizza: player = player(640 - 32, 720, 64, 64)
+death_enemy = splat(100,100,64,64)
 
 
 def start() -> object:
@@ -205,6 +232,9 @@ def start() -> object:
     win.blit(bg, (0, 0))
     pygame.display.flip()
     while True:
+        font = pygame.font.Font("fonts/BurbankBigCondensed-Black.otf", 40)
+        text = font.render("Enter code to begin.", True, epic_colour)
+        win.blit(text, (10, 670))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -227,7 +257,7 @@ def start() -> object:
         if keys[pygame.K_a]:
             konami[9] = True
         assert isinstance(konami, object)
-        if keys[pygame.K_RETURN] and (True == all(konami)):
+        if keys[pygame.K_RETURN] and all(konami):
             win.blit(bg1, (0, 0))
             pygame.mixer.music.stop()
             music = pygame.mixer.music.load('music/tunes2.ogg')
@@ -239,8 +269,9 @@ def start() -> object:
 
 
 def game():
-    global timer, fpsavg, fpsc, frm_time, exit_state, cooldown, bullets, enemy_list
+    global timer, fpsavg, fpsc, frm_time, exit_state, cooldown, bullets, score, enemy_list, splat_list, shots_fired_total, shots_hit, shots_missed, burgers_missed, percentage_hit
     oh_my_eggs = time.time()
+    timer_of_invulnerability: float = time.time()
     while pizza.y > 600:
         pizza.y -= 0.98960910440376
         clock.tick(fps)
@@ -288,9 +319,11 @@ def game():
                 bullet.y -= bullet.vel
             else:
                 bullets.pop(bullets.index(bullet))
+                shots_missed += 1
         if len(bullets) < 50 and time.time() - cooldown > float(0.622):
             if keys[pygame.K_UP] or keys[pygame.K_w] or keys[pygame.K_SPACE]:
                 if not pizza.death:
+                    shots_fired_total += 1
                     cooldown = time.time()
                     bullets.append(
                         projectile(pizza.x + 13, pizza.y, 25, 74))
@@ -306,42 +339,67 @@ def game():
                 assert isinstance(enemy_list, object)
                 # noinspection PyCallingNonCallable
                 enemy_list.pop(enemy_list.index(foo))
+                burgers_missed += 1
             #if pygame.Rect.colliderect(pizza.hitbox, pygame.Rect(foo.x, foo.y, foo.width, foo.height)):
             assert isinstance(foo.width, object)
             if foo.x < pizza.x < foo.x + foo.width and foo.y < pizza.y < foo.y + foo.width or foo.x < pizza.x + pizza.width < foo.x + foo.width and foo.y < pizza.y + pizza.height < foo.y + foo.width:
-                print('hit')
-                pizza.death = True
-                pizza.x = 640 - 3
-                pizza.y = 720 + 98.960910440376
+                if not pizza.invulnerable:
+                    pizza.invulnerable = True
+                    print('hit')
+                    pizza.death = True
+                    pizza.x = 640 - 32
+                    pizza.y = 720 + 98.960910440376
+                    deathsnd.play()
         for foo in enemy_list:
             for bullet in bullets:
                 if foo.x < bullet.x < foo.x + foo.width and foo.y < bullet.y < foo.y + foo.width or foo.x < bullet.x + bullet.width < foo.x + foo.width and foo.y < bullet.y + bullet.height < foo.y + foo.width:
                     enemy_list.pop(enemy_list.index(foo))
                     bullets.pop(bullets.index(bullet))
+                    score += 100
+                    shots_hit += 1
+                    splat_list.append(
+                        splat(foo.x, foo.y, 64, 64))
+                    hitsnd.play()
+        for foo in splat_list:
+            foo.lifespan -= 1
+            if foo.lifespan <= 0:
+                splat_list.pop(splat_list.index(foo))
         if not float(random.uniform(1.55, 3.55)) > time.time() - oh_my_eggs:
             oh_my_eggs = time.time()
             enemy_list.append(
-                yes(random.randint(100, 1118), random.randint(-150, -62), 62, 62))
+                yes(random.randint(62, 1168), random.randint(-150, -62), 62, 62))
         if timer == 60:
             timer = 0
+        if pizza.y < 610:
+            pizza.invulnerable = True
         if pizza.death:
             if pizza.y > 600:
                 pizza.y -= 0.98960910440376
             else:
                 pizza.death = False
                 pizza.y = 600
+                pizza.invulnerable = True
+                timer_of_invulnerability = time.time()
+            if int(pizza.y) == 720:
+                deathsnd.stop()
+                spawnsnd.play()
+        if time.time() - timer_of_invulnerability >= float(3) and pizza.invulnerable:
+            pizza.invulnerable = False
         fpsc = (fpsavg // 1)
         frm_time = clock.get_time()
         clock.tick(fps)
         redrawgamewindow()
 
 
-def redrawgamewindow():
+def redrawgamewindow() -> object:
+    global percentage_hit
     updaterect = pygame.Rect(pizza.x - 32, pizza.y - 32, 96, 96)
     win.blit(bg1, (0, 0))
     for bullet in bullets:
         bullet.draw(win)
     for foo in enemy_list:
+        foo.draw(win)
+    for foo in splat_list:
         foo.draw(win)
     pizza.draw(win)
     # font = pygame.font.Font("fonts/Ailerons-Typeface.otf", 20)
@@ -354,18 +412,35 @@ def redrawgamewindow():
     win.blit(text, (5, 45))
     text = font.render("Enemies on screen: " + str(len(enemy_list)), True, white)
     win.blit(text, (5, 65))
-    text = font.render("Pizza X: " + str(pizza.x) + ' Pizza Y: ' + str(pizza.y), True, white)
+    text = font.render("Splats on screen: " + str(len(splat_list)), True, white)
     win.blit(text, (5, 85))
-    text = font.render('Display Driver: ' + str(pygame.display.get_driver()), True, white)
+    text = font.render("Pizza X: " + str(pizza.x) + ' Pizza Y: ' + str(pizza.y), True, white)
     win.blit(text, (5, 105))
-    text = font.render('time.time(): ' + str(time.time()), True, white)
+    text = font.render("Pizza.isInvulnerable: {0}".format(str(pizza.invulnerable)), True, white)
     win.blit(text, (5, 125))
+    text = font.render('Display Driver: ' + str(pygame.display.get_driver()), True, white)
+    win.blit(text, (5, 145))
+    text = font.render('time.time(): ' + str(time.time()), True, white)
+    win.blit(text, (5, 165))
+    try:
+        text = font.render('Accuracy calculator:  ' + 'Shots Fired: ' + str(shots_fired_total) + ' Shots Hit: ' + str(shots_hit) + ' Shots Missed: ' + str(shots_missed) + ' Burgers missed: ' + str(burgers_missed) + ' Accuracy Percentage: ' + str((shots_hit/shots_fired_total * 100)//1) + '%', True, white)
+        win.blit(text, (5, 185))
+        percentage_hit = (shots_hit / shots_fired_total * 100) // 1
+    except:
+        text = font.render('Accuracy calculator:  ' + 'Shots Fired: ' + str(shots_fired_total) + ' Shots Hit: ' + str(shots_hit) + ' Shots Missed: ' + str(shots_missed) + ' Burgers missed: ' + str(burgers_missed) + ' Accuracy Percentage: 0%', True, white)
+        win.blit(text, (5, 185))
     smallText: Union[Font, FontType] = pygame.font.Font("fonts/BurbankBigCondensed-Black.otf", 40)
     textSurf, textRect = text_objects('High Score', smallText, red)
     textRect.center = (1280 // 2, 35)
     win.blit(textSurf, textRect)
     textSurf, textRect = text_objects(str(score), smallText, white)
     textRect.center = (1280 // 2, 80)
+    win.blit(textSurf, textRect)
+    textSurf, textRect = text_objects('Accuracy', smallText, blue)
+    textRect.center = (1280 // 2 - 300, 35)
+    win.blit(textSurf, textRect)
+    textSurf, textRect = text_objects(str(percentage_hit) + '%', smallText, white)
+    textRect.center = (1280 // 2 - 300, 80)
     win.blit(textSurf, textRect)
     # win.blit(scanlines, (0,0))
     if exit_state == 'normal':
