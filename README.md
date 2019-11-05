@@ -1,12 +1,15 @@
 # ![](durr.gif) Durr Burger Game ![](durr.gif)
 
+## TL;DR
+A game based of a game in a game. Game runs on python and pygame. Wasd, arrow keys for move; space for shoot. Shoot flying things that aren't you or what you shoot. Game is infinite with two repeating sections. Currently only one section.
+
 ## What is it?
 
-This game is based on the mini game present in Fortnite either when attempting to view the world cup while it was not broadcasting in BR or when entering the Konami Code on the black hole screen during 'The End' event.
+This game is based on the mini game that was present in Fortnite either when attempting to view the world cup while it was not broadcasting in BR or when entering the Konami Code on the black hole screen during 'The End' event.
 
 ## How to play?
 
-You will start the game on an empty black hole screen, to start the game, simply enter the Konami Code on your keyboard. If you don't know it, its below.
+You will start the game on an empty black hole screen, to start the game, simply enter the Konami Code on your keyboard. If you don't know it, remember it, or know how to enter it on a keyboard, its below.
 <details>
   <summary>Konami Code on Keyboard</summary>
   
