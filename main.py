@@ -153,7 +153,7 @@ bright_blue = (0, 255, 255)
 purple: Tuple[int, int, int] = (255, 0, 255)
 epic_colour = (40, 52, 72)
 
-konami: List[bool] = [True, True, True, True, True, True, True, True, True, True]
+konami: List[bool] = [False, False, False, False, False, False, False, False, False, False]
 
 
 class player(object):
@@ -191,7 +191,7 @@ class projectile(object):
 
 
 class yes(object):
-    def __init__(self, x, y, width, height):
+    def __init__(self, x: object, y: object, width: object, height: object) -> object:
         self.x = x
         self.y = y
         self.width = width
@@ -342,13 +342,14 @@ def game():
                 burgers_missed += 1
             #if pygame.Rect.colliderect(pizza.hitbox, pygame.Rect(foo.x, foo.y, foo.width, foo.height)):
             assert isinstance(foo.width, object)
-            if foo.x < pizza.x < foo.x + foo.width and foo.y < pizza.y < foo.y + foo.width or foo.x < pizza.x + pizza.width < foo.x + foo.width and foo.y < pizza.y + pizza.height < foo.y + foo.width and not pizza.invulnerable and not pizza.death:
-                pizza.invulnerable = True
-                print('hit')
-                pizza.death = True
-                pizza.x = 640 - 32
-                pizza.y = 720 + 98.960910440376
-                deathsnd.play()
+            if foo.x < pizza.x < foo.x + foo.width and foo.y < pizza.y < foo.y + foo.width or foo.x < pizza.x + pizza.width < foo.x + foo.width and foo.y < pizza.y + pizza.height < foo.y + foo.width:
+                if not pizza.invulnerable:
+                    pizza.invulnerable = True
+                    print('hit')
+                    pizza.death = True
+                    pizza.x = 640 - 32
+                    pizza.y = 720 + 98.960910440376
+                    deathsnd.play()
         for foo in enemy_list:
             for bullet in bullets:
                 if foo.x < bullet.x < foo.x + foo.width and foo.y < bullet.y < foo.y + foo.width or foo.x < bullet.x + bullet.width < foo.x + foo.width and foo.y < bullet.y + bullet.height < foo.y + foo.width:
@@ -378,9 +379,10 @@ def game():
                 pizza.invulnerable = True
                 timer_of_invulnerability = time.time()
             if int(pizza.y) == 720:
+                pizza.invulnerable = True
                 deathsnd.stop()
                 spawnsnd.play()
-        if time.time() - timer_of_invulnerability >= float(3) and pizza.invulnerable:
+        if time.time() - timer_of_invulnerability >= float(4) and pizza.invulnerable and pizza.y <= 600:
             pizza.invulnerable = False
         fpsc = (fpsavg // 1)
         frm_time = clock.get_time()
@@ -398,6 +400,8 @@ def redrawgamewindow() -> object:
         foo.draw(win)
     for foo in splat_list:
         foo.draw(win)
+    if pizza.y > 600:
+        pizza.invulnerable = True
     pizza.draw(win)
     # font = pygame.font.Font("fonts/Ailerons-Typeface.otf", 20)
     font = pygame.font.Font("fonts/BurbankBigCondensed-Black.otf", 20)
