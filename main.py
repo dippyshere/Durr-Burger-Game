@@ -161,7 +161,6 @@ class player(object):
 
     def __init__(self, x: object, y: object, width: object, height: object) -> object:
         """
-
         :rtype: object
         """
         self.x = x
