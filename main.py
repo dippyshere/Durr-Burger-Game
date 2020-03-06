@@ -204,6 +204,7 @@ class yes(object):
         win.blit(enemy[self.timer], (self.x, self.y))
 
 
+
 class splat(object):
     def __init__(self, x: object, y: object, width: object, height: object) -> object:
         self.x = x
